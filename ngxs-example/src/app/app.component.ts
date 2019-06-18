@@ -4,10 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <div>
-      <h1>{{ title }}</h1>
+      <app-breaking-bad></app-breaking-bad>
     </div>
   `,
-  styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
   title = 'ngxs-example';
