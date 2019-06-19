@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Store, Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
-import { PlaylistService } from '../../services/playlist.service';
+import { SongModel } from '../../services/playlist.service';
+import { PlaylistState } from '../../store/playlist.state';
+import { LoadSongs, ChangeSong } from '../../store/playlist.actions';
 
 @Component({
   selector: 'app-playlist',
@@ -13,29 +17,34 @@ import { PlaylistService } from '../../services/playlist.service';
     </songs-list>
 
     <songs-list
-      [list]="playlist$ | async"
+      [list]="listenedSongs$ | async"
       (toggle)="onToggle($event)">
-      Favourites
+      Listened
     </songs-list>
 
     <songs-list
-      [list]="playlist$ | async"
+      [list]="favouriteSongs$ | async"
       (toggle)="onToggle($event)">
-      Listened
+      Favourites
     </songs-list>
   </div>
   `,
   styleUrls: ['./playlist.component.scss']
 })
 export class PlaylistComponent implements OnInit {
-  playlist$ = this._api.getPlaylist$;
+  @Select(PlaylistState.songs) playlist$: Observable<SongModel[]>;
+  @Select(PlaylistState.favouriteSongs) favouriteSongs$: Observable<SongModel[]>;
+  @Select(PlaylistState.listenedSongs) listenedSongs$: Observable<SongModel[]>;
 
   constructor(
-    private _api: PlaylistService
+    private _store: Store
   ) { }
 
   ngOnInit() {
-    // this._api.getPlaylist$.subscribe(values => console.log(values))
+    this._store.dispatch(new LoadSongs());
   }
 
+  onToggle(song: SongModel) {
+    this._store.dispatch(new ChangeSong(song))
+  }
 }

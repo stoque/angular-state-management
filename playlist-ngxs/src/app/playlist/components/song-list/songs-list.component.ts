@@ -40,7 +40,7 @@ export class SongsListComponent {
   toggleItem(index: number, prop: string) {
     const track = this.list[index];
     this.toggle.emit({
-      track: { ...track, [prop]: !track[prop] }
+      ...track, [prop]: !track[prop]
     });
   }
 }
