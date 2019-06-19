@@ -1,0 +1,9 @@
+.songs {
+  display: flex;
+  justify-content: space-between;
+
+  > songs-list {
+    flex-grow: 1;
+    margin: 0 40px;
+  }
+}
